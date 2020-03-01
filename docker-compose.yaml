@@ -43,6 +43,6 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      #- ./nginx_html:/usr/share/nginx/html:ro
+      - ./nginx_html:/nginx_html:ro
       - ./nginx_conf:/etc/nginx:ro
       - ./nginx_logs:/logs
