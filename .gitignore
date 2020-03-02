@@ -5,6 +5,9 @@ ghost_mysql/
 # Local secrets
 .env
 
+# The nginx.conf file is created at start time
+nginx_conf/nginx.conf
+
 # All log directories
 **/*_logs/
 
