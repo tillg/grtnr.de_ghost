@@ -28,7 +28,6 @@ into the {body} of the default.hbs template --}}
         <div class="post-feed">
             {{#if @member}}
             {{!-- if the user has access, i.e. is registered, we show all posts --}}
-            <script>console.log("I am a member")</script>
             {{#foreach posts visibility="all"}}
 
             {{!-- The tag below includes the markup for each post - partials/post-card.hbs --}}
@@ -37,7 +36,6 @@ into the {body} of the default.hbs template --}}
             {{/foreach}}
             {{else}}
             {{!-- if the user is not registered, we show only public posts --}}
-            <script>console.log("I am NO member")</script>
             {{#foreach posts visibility="public"}}
 
             {{!-- The tag below includes the markup for each post - partials/post-card.hbs --}}
