@@ -1,51 +1,88 @@
 version: '3'
 services:
-  ghost:
+  money-grtnr-ghost:
     image: ghost:3.8
     restart: always
     depends_on:
-      - db
+      - money-grtnr-db
     environment:
-      url: http://money.${SERVER_URL:?err}
+      url: http://${MONEY_GRTNR_SERVER_URL:?err}
       database__client: mysql
-      database__connection__host: db
+      database__connection__host: money-grtnr-db
       database__connection__user: root
-      database__connection__password: ${DB_PASS:?err}
+      database__connection__password: ${MONEY_GRTNR_DB_PASS:?err}
       database__connection__database: ghost
       logging__path: /logs
       logging__info: 'info'
       mail__transport: 'SMTP'
-      mail__from: '${GMAIL_EMAIL:?err}'
+      mail__from: '${MONEY_GRTNR_GMAIL_EMAIL:?err}'
       mail__options__service: 'gmail'
       mail__options__host: 'smtp.gmail.com'
       mail__options__port: 465
       mail__options__secure: 'true'
-      mail__options__auth__user: '${GMAIL_EMAIL:?err}'
-      mail__options__auth__pass: '${GMAIL_PASS:?err}'
+      mail__options__auth__user: '${MONEY_GRTNR_GMAIL_EMAIL:?err}'
+      mail__options__auth__pass: '${MONEY_GRTNR_GMAIL_PASS:?err}'
     volumes:
-      - ./ghost_content:/var/lib/ghost/content
-      - ./ghost_logs:/logs
+      - ./money.grtnr/ghost_content:/var/lib/ghost/content
+      - ./money.grtnr/ghost_logs:/logs
 
-  db:
+  money-grtnr-db:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASS:?err}
+      MYSQL_ROOT_PASSWORD: ${MONEY_GRTNR_DB_PASS:?err}
     volumes:
-      - ./ghost_mysql:/var/lib/mysql
+      - ./money.grtnr/ghost_mysql:/var/lib/mysql
+
+  corona-cooking-ghost:
+    image: ghost:3.8
+    restart: always
+    depends_on:
+      - corona-cooking-db
+    environment:
+      url: http://${CORONA_COOKING_SERVER_URL:?err}
+      database__client: mysql
+      database__connection__host: corona-cooking-db
+      database__connection__user: root
+      database__connection__password: ${CORONA_COOKING_DB_PASS:?err}
+      database__connection__database: ghost
+      logging__path: /logs
+      logging__info: 'info'
+      mail__transport: 'SMTP'
+      mail__from: '${CORONA_COOKING_GMAIL_EMAIL:?err}'
+      mail__options__service: 'gmail'
+      mail__options__host: 'smtp.gmail.com'
+      mail__options__port: 465
+      mail__options__secure: 'true'
+      mail__options__auth__user: '${CORONA_COOKING_GMAIL_EMAIL:?err}'
+      mail__options__auth__pass: '${CORONA_COOKING_GMAIL_PASS:?err}'
+    volumes:
+      - ./corona.cooking/ghost_content:/var/lib/ghost/content
+      - ./corona.cooking/ghost_logs:/logs
+
+  corona-cooking-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${CORONA_COOKING_DB_PASS:?err}
+    volumes:
+      - ./corona.cooking/ghost_mysql:/var/lib/mysql
 
   nginx:
     image: nginx
     restart: always
     depends_on:
-      - ghost
+      - money-grtnr-ghost
+      - corona-cooking-ghost
     ports:
       - '80:80'
       - '443:443'
     environment:
-      SERVER_URL: ${SERVER_URL:?err}
+      MONEY_GRTNR_SERVER_URL: ${MONEY_GRTNR_SERVER_URL:?err}
+      CORONA_COOKING_SERVER_URL: ${CORONA_COOKING_SERVER_URL:?err}
+      ROOT_SERVER_URL: ${ROOT_SERVER_URL:?err}
     volumes:
       - ./nginx_html:/nginx_html:ro
       - ./nginx_conf:/etc/nginx
       - ./nginx_logs:/logs
-    command: /bin/bash -c "envsubst  '$$SERVER_URL' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst  '$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$CORONA_COOKING_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"

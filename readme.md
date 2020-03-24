@@ -23,7 +23,7 @@ From here to the server all we need to do:
 
 ```shell
 # Login to server
-ssh ubuntu@ghost.de
+ssh ubuntu@grtnr.de
 
 # Shutdown currently running docker ghost network
 cd ghost
@@ -33,7 +33,7 @@ docker-compose down
 git fetch
 
 # Restart
-docker-compose up --build
+docker-compose up --build &
 ```
 
 ## Testing locally
