@@ -68,21 +68,56 @@ services:
     volumes:
       - ./corona.cooking/ghost_mysql:/var/lib/mysql
 
+  grtnr-ghost:
+    image: ghost:3.8
+    restart: always
+    depends_on:
+      - grtnr-db
+    environment:
+      url: http://${GRTNR_SERVER_URL:?err}
+      database__client: mysql
+      database__connection__host: grtnr-db
+      database__connection__user: root
+      database__connection__password: ${GRTNR_DB_PASS:?err}
+      database__connection__database: ghost
+      logging__path: /logs
+      logging__info: 'info'
+      mail__transport: 'SMTP'
+      mail__from: '${GRTNR_GMAIL_EMAIL:?err}'
+      mail__options__service: 'gmail'
+      mail__options__host: 'smtp.gmail.com'
+      mail__options__port: 465
+      mail__options__secure: 'true'
+      mail__options__auth__user: '${GRTNR_GMAIL_EMAIL:?err}'
+      mail__options__auth__pass: '${GRTNR_GMAIL_PASS:?err}'
+    volumes:
+      - ./grtnr.de/ghost_content:/var/lib/ghost/content
+      - ./grtnr.de/ghost_logs:/logs
+
+  grtnr-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${GRTNR_DB_PASS:?err}
+    volumes:
+      - ./grtnr.de/ghost_mysql:/var/lib/mysql
+
   nginx:
     image: nginx
     restart: always
     depends_on:
       - money-grtnr-ghost
       - corona-cooking-ghost
+      - grtnr-ghost
     ports:
       - '80:80'
       - '443:443'
     environment:
       MONEY_GRTNR_SERVER_URL: ${MONEY_GRTNR_SERVER_URL:?err}
       CORONA_COOKING_SERVER_URL: ${CORONA_COOKING_SERVER_URL:?err}
-      ROOT_SERVER_URL: ${ROOT_SERVER_URL:?err}
+      GRTNR_SERVER_URL: ${GRTNR_SERVER_URL:?err}
     volumes:
       - ./nginx_html:/nginx_html:ro
       - ./nginx_conf:/etc/nginx
       - ./nginx_logs:/logs
-    command: /bin/bash -c "envsubst  '$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$CORONA_COOKING_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst  '$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$CORONA_COOKING_SERVER_URL\n$$GRTNR_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"

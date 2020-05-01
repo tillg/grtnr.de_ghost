@@ -40,6 +40,7 @@ docker-compose up --build &
 
 You can also test your setup locally. All the settings that differ from the production to the local environment are stored in the `.env` file in the root directory of the project.
 
+
 **Question** How could we import the settings and content from the production site into our local setup?
 
 - Content should be easy
