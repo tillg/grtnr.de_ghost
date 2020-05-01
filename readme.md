@@ -30,7 +30,7 @@ cd ghost
 docker-compose down
 
 # Get new version
-git fetch
+git pull
 
 # Restart
 docker-compose up --build &

@@ -34,39 +34,39 @@ services:
     volumes:
       - ./money.grtnr/ghost_mysql:/var/lib/mysql
 
-  corona-cooking-ghost:
-    image: ghost:3.8
-    restart: always
-    depends_on:
-      - corona-cooking-db
-    environment:
-      url: http://${CORONA_COOKING_SERVER_URL:?err}
-      database__client: mysql
-      database__connection__host: corona-cooking-db
-      database__connection__user: root
-      database__connection__password: ${CORONA_COOKING_DB_PASS:?err}
-      database__connection__database: ghost
-      logging__path: /logs
-      logging__info: 'info'
-      mail__transport: 'SMTP'
-      mail__from: '${CORONA_COOKING_GMAIL_EMAIL:?err}'
-      mail__options__service: 'gmail'
-      mail__options__host: 'smtp.gmail.com'
-      mail__options__port: 465
-      mail__options__secure: 'true'
-      mail__options__auth__user: '${CORONA_COOKING_GMAIL_EMAIL:?err}'
-      mail__options__auth__pass: '${CORONA_COOKING_GMAIL_PASS:?err}'
-    volumes:
-      - ./corona.cooking/ghost_content:/var/lib/ghost/content
-      - ./corona.cooking/ghost_logs:/logs
+  # corona-cooking-ghost:
+  #   image: ghost:3.8
+  #   restart: always
+  #   depends_on:
+  #     - corona-cooking-db
+  #   environment:
+  #     url: http://${CORONA_COOKING_SERVER_URL:?err}
+  #     database__client: mysql
+  #     database__connection__host: corona-cooking-db
+  #     database__connection__user: root
+  #     database__connection__password: ${CORONA_COOKING_DB_PASS:?err}
+  #     database__connection__database: ghost
+  #     logging__path: /logs
+  #     logging__info: 'info'
+  #     mail__transport: 'SMTP'
+  #     mail__from: '${CORONA_COOKING_GMAIL_EMAIL:?err}'
+  #     mail__options__service: 'gmail'
+  #     mail__options__host: 'smtp.gmail.com'
+  #     mail__options__port: 465
+  #     mail__options__secure: 'true'
+  #     mail__options__auth__user: '${CORONA_COOKING_GMAIL_EMAIL:?err}'
+  #     mail__options__auth__pass: '${CORONA_COOKING_GMAIL_PASS:?err}'
+  #   volumes:
+  #     - ./corona.cooking/ghost_content:/var/lib/ghost/content
+  #     - ./corona.cooking/ghost_logs:/logs
 
-  corona-cooking-db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${CORONA_COOKING_DB_PASS:?err}
-    volumes:
-      - ./corona.cooking/ghost_mysql:/var/lib/mysql
+  # corona-cooking-db:
+  #   image: mysql:5.7
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${CORONA_COOKING_DB_PASS:?err}
+  #   volumes:
+  #     - ./corona.cooking/ghost_mysql:/var/lib/mysql
 
   grtnr-ghost:
     image: ghost:3.8
@@ -107,14 +107,14 @@ services:
     restart: always
     depends_on:
       - money-grtnr-ghost
-      - corona-cooking-ghost
+      #      - corona-cooking-ghost
       - grtnr-ghost
     ports:
       - '80:80'
       - '443:443'
     environment:
       MONEY_GRTNR_SERVER_URL: ${MONEY_GRTNR_SERVER_URL:?err}
-      CORONA_COOKING_SERVER_URL: ${CORONA_COOKING_SERVER_URL:?err}
+      #      CORONA_COOKING_SERVER_URL: ${CORONA_COOKING_SERVER_URL:?err}
       GRTNR_SERVER_URL: ${GRTNR_SERVER_URL:?err}
     volumes:
       - ./nginx_html:/nginx_html:ro
