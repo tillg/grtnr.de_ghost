@@ -2,6 +2,11 @@
 
 Everything that goes with `grtnr.de`.
 
+## To Do
+
+* Have certificates and HTTPS
+* Make logo & `favicon.ico`
+
 **Note** For secrets look in your password manager 😀
 
 ## Server setup
