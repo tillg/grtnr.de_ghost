@@ -1,6 +1,7 @@
 # Content of Ghost, it's database 
 ghost_content/
 ghost_mysql/
+wiki-data/
 
 # Local secrets
 .env

@@ -4,8 +4,8 @@ Everything that goes with `grtnr.de`.
 
 ## To Do
 
-* Have certificates and HTTPS
-* Make logo & `favicon.ico`
+- Have certificates and HTTPS
+- Make logo & `favicon.ico`
 
 **Note** For secrets look in your password manager 😀
 
@@ -45,6 +45,20 @@ docker-compose up --build &
 
 You can also test your setup locally. All the settings that differ from the production to the local environment are stored in the `.env` file in the root directory of the project.
 
+To run the setup locally:
+
+```bash
+docker-compose up
+```
+
+## Logging
+
+I need to get hold of the logs of my containers and to have tools to monitor them - w/o having to read thru every line....
+
+### Reading
+
+- A good overview of docker logging can be found in this article: [Docker Logging: A Complete Guide](https://sematext.com/guides/docker-logs/)
+- [Centralize Your Docker Logging With Syslog (Medium)](https://medium.com/better-programming/docker-centralized-logging-with-syslog-97b9c147bd30)
 
 **Question** How could we import the settings and content from the production site into our local setup?
 

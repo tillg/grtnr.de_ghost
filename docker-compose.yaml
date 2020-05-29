@@ -116,8 +116,34 @@ services:
       MONEY_GRTNR_SERVER_URL: ${MONEY_GRTNR_SERVER_URL:?err}
       #      CORONA_COOKING_SERVER_URL: ${CORONA_COOKING_SERVER_URL:?err}
       GRTNR_SERVER_URL: ${GRTNR_SERVER_URL:?err}
+      WIKI_SERVER_URL: ${WIKI_SERVER_URL:?err}
     volumes:
       - ./nginx_html:/nginx_html:ro
       - ./nginx_conf:/etc/nginx
       - ./nginx_logs:/logs
-    command: /bin/bash -c "envsubst  '$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$CORONA_COOKING_SERVER_URL\n$$GRTNR_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst  '$$WIKI_SERVER_URL\n$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$CORONA_COOKING_SERVER_URL\n$$GRTNR_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+
+  wiki-db:
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_DB: wiki
+      POSTGRES_PASSWORD: wikijsrocks
+      POSTGRES_USER: wikijs
+    #      logging:
+    #        driver: 'none'
+    restart: unless-stopped
+    volumes:
+      - ./wiki-data:/var/lib/postgresql/data
+
+  wiki:
+    image: requarks/wiki:2
+    depends_on:
+      - wiki-db
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: wiki-db
+      DB_PORT: 5432
+      DB_USER: wikijs
+      DB_PASS: wikijsrocks
+      DB_NAME: wiki
+    restart: unless-stopped
