@@ -32,7 +32,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MONEY_GRTNR_DB_PASS:?err}
     volumes:
-      - ./money.grtnr/ghost_mysql:/var/lib/mysql
+      - ./mysql:/var/lib/mysql
 
   grtnr-ghost:
     image: ghost:3.8
@@ -78,7 +78,7 @@ services:
       - ./nginx_html:/nginx_html:ro
       - ./nginx_conf:/etc/nginx
       - ./nginx_logs:/logs
-    command: /bin/bash -c "envsubst  '$$WIKI_SERVER_URL\n$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$CORONA_COOKING_SERVER_URL\n$$GRTNR_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst  '$$WIKI_SERVER_URL\n$$ROOT_SERVER_URL\n$$MONEY_GRTNR_SERVER_URL\n$$GRTNR_SERVER_URL' < /etc/nginx/nginx.template.conf > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
 
   wiki-db:
     image: postgres:11-alpine
