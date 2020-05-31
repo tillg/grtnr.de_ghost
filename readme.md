@@ -1,6 +1,6 @@
 # grtnr.de
 
-Everything that goes with `grtnr.de`.
+Everything that goes with `grtnr.de`. It started with a ghost blog, but now contains more services.
 
 ## To Do
 
@@ -11,18 +11,15 @@ Everything that goes with `grtnr.de`.
 
 ## Server setup
 
-We use a server on AWS, Frankfurt:
-
-- Elastic IP: 3.125.105.230
-- Instance type: t2.micro
+For details about my server on AWS see [here](amazon.md).
 
 ## Code structure
 
-The docker setup currently is based on my [ghost.docker.image](https://bitbucket.org/tgartner/ghost.docker.image/src/master/), with additional, website specific configurations.
+The ghost docker setup currently is based on my [ghost.docker.image](https://bitbucket.org/tgartner/ghost.docker.image/src/master/), with additional, website specific configurations.
 
 ## Code to server
 
-We maintain all the settings of the ghost installation as docker based settings within THIS repository. The content (i.e. the ghost-content and ghost-database) are NOT within this repo (i.e. those directories are listed in `.gitignore`).
+We maintain all the settings of the docker settings within the `~/grtnr` repository. The content (i.e. the ghost-content, ghost-database) are NOT within this repo (i.e. those directories are listed in `.gitignore`).
 
 From here to the server all we need to do:
 
@@ -31,7 +28,7 @@ From here to the server all we need to do:
 ssh ubuntu@grtnr.de
 
 # Shutdown currently running docker ghost network
-cd ghost
+cd grtnr
 docker-compose down
 
 # Get new version
@@ -39,6 +36,23 @@ git pull
 
 # Restart
 docker-compose up --build &
+```
+
+## Initial install
+
+When creating / installing the server initially, the following steps needed to be done:
+
+* Setup the node and install docker. See [here](amazon.md).
+
+```bash
+ssh-keygen -t rsa # Create a ssh key
+# Add the key to the bitbucket repo readers
+
+git clone git@bitbucket.org:tgartner/grtnr.de.git # Clone this repo
+
+cp .env.sample .env
+nano .env # Fillout the variables as needed
+
 ```
 
 ## Testing locally
