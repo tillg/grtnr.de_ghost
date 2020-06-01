@@ -65,6 +65,8 @@ services:
     container_name: phpmyadmin
     depends_on:
       - mysql-db
+    environment:
+      - PMA_ARBITRARY=1
 
   nginx:
     image: nginx
