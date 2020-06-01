@@ -62,6 +62,8 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql-db
     ports:
       - '8080:8080'
 
