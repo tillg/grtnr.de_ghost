@@ -4,6 +4,10 @@ Everything that goes with `grtnr.de`. It started with a ghost blog, but now cont
 
 ## To Do
 
+- Setup AWS monitoring  
+  - Automatic restarting 
+  - Start dockers at node startup
+- Backup
 - Have certificates and HTTPS
 - Make logo & `favicon.ico`
 
@@ -78,3 +82,21 @@ I need to get hold of the logs of my containers and to have tools to monitor the
 
 - Content should be easy
 - Users & authors should be modified, as you don't want notification emails to go out to real life users...
+
+## Problems and solutions
+
+### Migration lock
+
+Ghost doesn't start, i.e. interrupts startup with message **Migration lock was never released or currently a migration is running.**
+
+The reason is a file access problem of the mysql data directory. I haven't tracked down exactly the root cause, but I could fix it this way:
+
+```bash
+cd mysql
+sudo rm -rf * # Yes, we delete the entire mysql data directory...
+cd ..
+sudo chgrp root mysql
+sudo chown 999 mysql
+```
+
+Then restart with `docker-compose up`...

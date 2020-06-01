@@ -60,6 +60,11 @@ services:
       - ./grtnr.de/ghost_content:/var/lib/ghost/content
       - ./grtnr.de/ghost_logs:/logs
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8080:8080'
+
   nginx:
     image: nginx
     restart: always
