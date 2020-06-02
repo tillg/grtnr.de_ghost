@@ -62,14 +62,6 @@ services:
       - ./grtnr.de/ghost_content:/var/lib/ghost/content
       - ./grtnr.de/ghost_logs:/logs
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    depends_on:
-      - mysql-db
-    environment:
-      - PMA_ARBITRARY=1
-
   nginx:
     image: nginx
     restart: always
