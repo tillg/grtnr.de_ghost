@@ -33,6 +33,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MONEY_GRTNR_DB_PASS:?err}
     volumes:
       - ./mysql:/var/lib/mysql
+    ports:
+      - '3306:3306'
 
   grtnr-ghost:
     image: ghost:3.8
@@ -78,7 +80,6 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '3306:3306'
     environment:
       MONEY_GRTNR_SERVER_URL: ${MONEY_GRTNR_SERVER_URL:?err}
       GRTNR_SERVER_URL: ${GRTNR_SERVER_URL:?err}
