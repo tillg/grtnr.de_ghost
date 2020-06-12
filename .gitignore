@@ -2,6 +2,8 @@
 ghost_content/
 ghost_mysql/
 wiki-data/
+bak-data/
+mysql/
 
 # Local secrets
 .env

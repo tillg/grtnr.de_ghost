@@ -71,10 +71,11 @@ docker-compose up
 
 ## Logging
 
-I need to get hold of the logs of my containers and to have tools to monitor them - w/o having to read thru every line....
+I need to get hold of the logs of my containers and to have tools to monitor them - w/o having to read thru every line.... Since we use Loki at work, it would be a plus to use it here too.
 
 ### Reading
 
+- A promising scenario is desribed [here](https://dev.to/thakkaryash94/docker-container-logs-using-fluentd-and-grafana-loki-a15)
 - A good overview of docker logging can be found in this article: [Docker Logging: A Complete Guide](https://sematext.com/guides/docker-logs/)
 - [Centralize Your Docker Logging With Syslog (Medium)](https://medium.com/better-programming/docker-centralized-logging-with-syslog-97b9c147bd30)
 

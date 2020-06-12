@@ -1,0 +1,1 @@
+mysqldump --column-statistics=0 -u root -pyour_database_root_password -h host.docker.internal grtnr-ghost
